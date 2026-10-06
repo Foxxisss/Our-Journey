@@ -157,10 +157,46 @@ h2{
  .letter{padding:25px;font-size:1.15rem}
 }
 @media(max-width:450px){.gallery{grid-template-columns:1fr}.hero h1{font-size:5rem}}
+#musicBtn{
+  position:fixed;
+  right:22px;
+  bottom:22px;
+  width:52px;
+  height:52px;
+  border:none;
+  border-radius:50%;
+  background:var(--cream);
+  color:var(--blue-deep);
+  font-size:24px;
+  cursor:pointer;
+  z-index:100;
+  box-shadow:0 8px 25px #4c69a344;
+  transition:.25s;
+}
+
+#musicBtn:hover{
+  transform:scale(1.08);
+}
+
+#musicBtn.playing{
+  animation:musicPulse 1.5s infinite ease-in-out;
+}
+
+@keyframes musicPulse{
+  50%{
+    transform:scale(1.08);
+  }
+}
 </style>
 </head>
 <body>
 
+<audio id="bgMusic" loop>
+  <source src="Music/our-song.mp3" type="audio/mpeg">
+</audio>
+
+<button id="musicBtn" onclick="toggleMusic()">♫</button>
+  
 <section class="hero">
  <div class="stars">
   <span class="star" style="left:9%;top:20%">✦</span><span class="star" style="left:23%;top:65%;animation-delay:1s">✧</span>
@@ -172,7 +208,7 @@ h2{
   <div class="heart">˗ˋˏ♡ˎˊ˗</div>
   <h1>Two Months<br>With You</h1>
   <div class="date">15 October 2026 · our little journey</div>
-  <button class="btn" onclick="go('story')">come, let's remember ♡</button>
+  <button class="btn" onclick="startStory()">come, let's remember ♡</button>
  </div>
 </section>
 
@@ -306,6 +342,29 @@ h2{
 
 <script>
 function go(id){document.getElementById(id).scrollIntoView({behavior:'smooth'})}
+
+function startStory(){
+  const music = document.getElementById('bgMusic');
+  music.volume = 0.35;
+  music.play();
+  go('story');
+}
+
+function toggleMusic(){
+  const music = document.getElementById('bgMusic');
+  const btn = document.getElementById('musicBtn');
+
+  if(music.paused){
+    music.play();
+    btn.textContent = '♫';
+    btn.classList.add('playing');
+  }else{
+    music.pause();
+    btn.textContent = '♫';
+    btn.classList.remove('playing');
+  }
+}
+  
 function openLetter(){
  document.getElementById('secret').classList.toggle('show');
  for(let i=0;i<22;i++){
